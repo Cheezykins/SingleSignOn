@@ -4,14 +4,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class AuthCheckHeader
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
         $token = $request->header('x-cheezy-sso-token');
+	Log::info($token . ' recieved from header');
         if ($token === null) {
             return $this->bad();
         }
@@ -25,11 +26,11 @@ class AuthCheckHeader
 
     protected function bad()
     {
-        return response('', 401);
+        return abort(401, 'Authentication Required');
     }
 
     protected function good()
     {
-        return response();
+        return abort(200, 'OK');
     }
 }
