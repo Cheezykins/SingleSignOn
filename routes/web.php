@@ -17,6 +17,7 @@ Route::post('logout', 'Auth\AuthController@logout')->name('logout');
 
 Route::group(['middleware' => ['checkcookie']], function () {
     Route::get('/', 'HomeController@index');
+    Route::get('diskSpace', 'DiskSpaceController@getDiskSpace');
 });
 
 
