@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\GetDiskSpace;
 use App\Console\Commands\UserAdd;
+use App\Console\Commands\UserSetRoles;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         UserAdd::class,
-        GetDiskSpace::class
+        GetDiskSpace::class,
+        UserSetRoles::class
     ];
 
     /**
@@ -27,6 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('diskspace:get')->everyTenMinutes();
         // $schedule->command('inspire')
         //          ->hourly();
     }

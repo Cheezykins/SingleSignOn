@@ -22,13 +22,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Domain extends Model
 {
-    public function domain_roles()
-    {
-        return $this->hasMany(DomainRole::class);
-    }
 
     public function roles()
     {
-        return $this->hasManyThrough(Role::class, DomainRole::class);
+        return $this->belongsToMany(Role::class, 'domain_roles')->withTimestamps();
     }
 }

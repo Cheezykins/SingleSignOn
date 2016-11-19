@@ -24,24 +24,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Role extends Model
 {
-    public function user_roles()
-    {
-        return $this->hasMany(UserRole::class);
-    }
-
     public function users()
     {
-        return $this->hasManyThrough(User::class, UserRole::class);
-    }
-
-    public function domain_roles()
-    {
-        return $this->hasMany(DomainRole::class);
+        return $this->belongsToMany(User::class, 'user_roles')->withTimestamps();
     }
 
     public function domains()
     {
-        return $this->hasManyThrough(Domain::class, DomainRole::class);
+        return $this->belongsToMany(Domain::class, 'domain_roles')->withTimestamps();
     }
-
 }

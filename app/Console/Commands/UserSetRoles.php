@@ -2,41 +2,44 @@
 
 namespace App\Console\Commands;
 
+use App\Role;
+use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserSetRoles extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'command:name';
+    protected $signature = 'user:set-roles {user : The user to set roles for} {roles* : The roles to add to the user}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $description = 'Sets a users roles';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        //
+        $userName = $this->argument('user');
+        $roles = $this->argument('roles');
+
+        try {
+            /** @var User $user */
+            $user = User::whereUsername($userName)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            $this->error("User {$userName} cannot be found");
+            return;
+        }
+
+        foreach ($roles as $roleCode) {
+            try {
+                $role = Role::whereCode($roleCode)->firstOrFail();
+
+                if ($user->hasRole($role->code)) {
+                    $this->info("User already has role {$roleCode}");
+                    continue;
+                }
+                $user->roles()->attach($role);
+                $this->info("Added role {$roleCode}");
+            } catch (ModelNotFoundException $e) {
+                $this->error("Role {$roleCode} does not exist");
+                continue;
+            }
+        }
     }
 }

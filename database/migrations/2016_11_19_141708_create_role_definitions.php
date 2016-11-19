@@ -22,21 +22,26 @@ class CreateRoleDefinitions extends Migration
 
         $dorginRole = new \App\Role();
         $dorginRole->name = 'Accesses Dorgin';
+        $dorginRole->code = 'ACCESS_DORGIN';
         $dorginRole->save();
+        $dorginRole->domains()->attach($dorgin->id);
 
         $plexRole = new \App\Role();
         $plexRole->name = 'Accesses Plex';
+        $plexRole->code = 'ACCESS_PLEX';
         $plexRole->save();
+        $plexRole->domains()->attach($plex->id);
 
-        $link = new \App\DomainRole();
-        $link->domain()->associate($dorgin);
-        $link->role()->associate($dorginRole);
-        $link->save();
+        $all = new \App\Role();
+        $all->name = 'Access All Domains';
+        $all->code = 'ACCESS_ALL';
+        $all->save();
+        $all->domains()->attach([$dorgin->id, $plex->id]);
 
-        $link = new \App\DomainRole();
-        $link->domain()->associate($plex);
-        $link->role()->associate($plexRole);
-        $link->save();
+        $admin = new \App\Role();
+        $admin->name = 'Administrator';
+        $admin->code = 'ADMIN';
+        $admin->save();
     }
 
 }

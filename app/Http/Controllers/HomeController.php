@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Disk;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -9,7 +10,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home');
+        $diskSpace = Disk::all();
+        return view('home', ['disks' => $diskSpace]);
     }
 
     public function check()

@@ -48,14 +48,12 @@ class User extends Authenticatable implements JWTSubject
         'password'
     ];
 
-    public function user_roles()
-    {
-        return $this->hasMany(UserRole::class);
-    }
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles()
     {
-        return $this->hasManyThrough(Role::class, UserRole::class);
+        return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
 
     public function getJWTIdentifier()
@@ -66,5 +64,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return ['exp' => time() + 157784760];
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->roles()->where('code', $roleName)->count() > 0;
     }
 }
