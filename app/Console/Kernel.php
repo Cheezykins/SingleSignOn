@@ -4,6 +4,8 @@ namespace App\Console;
 
 use App\Console\Commands\GetDiskSpace;
 use App\Console\Commands\UserAdd;
+use App\Console\Commands\UserDelete;
+use App\Console\Commands\UserSetPassword;
 use App\Console\Commands\UserSetRoles;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -18,13 +20,15 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         UserAdd::class,
         GetDiskSpace::class,
-        UserSetRoles::class
+        UserSetRoles::class,
+        UserSetPassword::class,
+        UserDelete::class
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)

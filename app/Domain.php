@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $domain
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\DomainRole[] $domain_roles
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Role[] $roles
  * @method static \Illuminate\Database\Query\Builder|\App\Domain whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Domain whereDomain($value)
