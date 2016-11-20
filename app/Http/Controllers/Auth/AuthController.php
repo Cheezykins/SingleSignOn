@@ -52,7 +52,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->session()->invalidate();
-        Cookie::queue(Cookie::forget('ssotoken'));
+        Cookie::queue(Cookie::forget('cheezyssotoken', '/', env('COOKIE_DOMAIN', null)));
         return response()->redirectGuest('login');
     }
 }

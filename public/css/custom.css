@@ -1,0 +1,34 @@
+ul.linkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.linkList li {
+    float: left;
+    display: block;
+    padding: 10px;
+    background: #efefef;
+    text-align: center;
+    margin-right: 5px;
+    color: #000;
+}
+
+ul.linkList li:hover {
+    background: #666;
+    color: #fff;
+}
+
+ul.linkList li img {
+    display: block;
+    margin: 0 auto 5px auto;
+}
+
+ul.linkList li a {
+    color: #000;
+}
+
+ul.linkList li:hover a {
+    color: #fff;
+    text-decoration: none;
+}
