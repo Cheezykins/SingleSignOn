@@ -68,6 +68,18 @@ class User extends Authenticatable implements JWTSubject
 
     public function hasRole($roleName)
     {
-        return $this->roles()->where('code', $roleName)->count() > 0;
+        return $this->roles()->whereCode($roleName)->count() > 0;
+    }
+
+    public function canAccess($domainName)
+    {
+        foreach ($this->roles as $role)
+        {
+            if ($role->hasDomain($domainName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

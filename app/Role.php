@@ -33,4 +33,9 @@ class Role extends Model
     {
         return $this->belongsToMany(Domain::class, 'domain_roles')->withTimestamps();
     }
+
+    public function hasDomain($domainName)
+    {
+        return $this->domains()->whereDomain($domainName)->count() > 0;
+    }
 }

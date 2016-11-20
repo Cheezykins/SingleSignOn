@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AuthCheck;
 use App\Http\Middleware\AuthCheckHeader;
+use App\Http\Middleware\RequireAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
@@ -51,6 +52,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'checkcookie' => AuthCheck::class,
         'checkheader' => AuthCheckHeader::class,
+        'requireadmin' => RequireAdmin::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

@@ -16,10 +16,13 @@ Route::post('login', 'Auth\AuthController@postLogin');
 Route::post('logout', 'Auth\AuthController@logout')->name('logout');
 
 Route::group(['middleware' => ['checkcookie']], function () {
-    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::group(['middleware' => ['requireadmin']], function() {
+        Route::get('admin', 'Admin\AdminController@index')->name('admin');
+    });
 });
 
 
 Route::group(['middleware' => ['checkheader']], function() {
-    Route::get('/auth', 'HomeController@check');
+    Route::get('/auth', 'HomeController@check')->name('check');
 });
