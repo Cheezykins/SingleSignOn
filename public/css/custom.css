@@ -10,7 +10,7 @@ ul.linkList li {
     padding: 10px;
     background: #efefef;
     text-align: center;
-    margin-right: 5px;
+    margin: 0 5px 5px 0;
     color: #000;
 }
 
