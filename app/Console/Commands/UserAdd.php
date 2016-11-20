@@ -24,11 +24,17 @@ class UserAdd extends Command
     public function handle()
     {
         $username = $this->ask("Enter a username");
-        $password = $this->secret("Enter a password");
+        $pass1 = $this->secret("Enter a password");
+        $pass2 = $this->secret("Repeat the password");
+
+        if ($pass1 !== $pass2) {
+            $this->error('Passwords do not match');
+            return;
+        }
 
         $user = new User();
         $user->username = $username;
-        $user->password = bcrypt($password);
+        $user->password = bcrypt($pass1);
         $user->save();
 
         $this->info('User ' . $username . ' created successfully');

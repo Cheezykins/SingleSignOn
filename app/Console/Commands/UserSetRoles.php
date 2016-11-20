@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserSetRoles extends Command
 {
-    protected $signature = 'user:set-roles {user : The user to set roles for} {roles* : The roles to add to the user}';
+    protected $signature = 'user:set-roles {user : The user to set roles for} {--remove : Remove the roles instead of adding them} {roles* : The roles to add to the user}';
 
     protected $description = 'Sets a users roles';
 
@@ -17,6 +17,11 @@ class UserSetRoles extends Command
     {
         $userName = $this->argument('user');
         $roles = $this->argument('roles');
+
+        $add = true;
+        if ($this->option('remove')) {
+            $add = false;
+        }
 
         try {
             /** @var User $user */
@@ -29,17 +34,38 @@ class UserSetRoles extends Command
         foreach ($roles as $roleCode) {
             try {
                 $role = Role::whereCode($roleCode)->firstOrFail();
-
-                if ($user->hasRole($role->code)) {
-                    $this->info("User already has role {$roleCode}");
-                    continue;
+                if ($add) {
+                    $this->addRole($user, $role);
+                } else {
+                    $this->subRole($user, $role);
                 }
-                $user->roles()->attach($role);
-                $this->info("Added role {$roleCode}");
+
             } catch (ModelNotFoundException $e) {
                 $this->error("Role {$roleCode} does not exist");
                 continue;
             }
         }
+    }
+
+    protected function subRole(User $user, Role $role)
+    {
+        if (!$user->hasRole($role->code)) {
+            $this->info("User already has {$role->code}");
+            return;
+        }
+
+        $user->roles()->detach($role);
+        $this->info("Removed role {$role->code}");
+    }
+
+    protected function addRole(User $user, Role $role)
+    {
+        if ($user->hasRole($role->code)) {
+            $this->info("User already has {$role->code}");
+            return;
+        }
+
+        $user->roles()->attach($role);
+        $this->info("Added role {$role->code}");
     }
 }

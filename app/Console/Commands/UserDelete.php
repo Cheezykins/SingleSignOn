@@ -2,41 +2,31 @@
 
 namespace App\Console\Commands;
 
+use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserDelete extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'command:name';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $signature = 'user:delete {user : The user to delete}';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Delete a user';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        //
+        $userName = $this->argument('user');
+
+        try {
+            $user = User::whereUsername($userName)->firstOrFail();
+
+            if ($this->confirm('Are you sure you wish to delete user ' . $userName . '?')) {
+                $user->delete();
+                $this->info('User has been deleted');
+            }
+        } catch (ModelNotFoundException $e) {
+            $this->error("User {$userName} not found.");
+            return;
+        }
     }
 }
