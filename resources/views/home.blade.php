@@ -10,8 +10,8 @@
                     <div class="panel-body">
                         <ul class="linkList">
                             <li data-toggle="tooltip" data-placement="top" title="Usenet download client (actually does the downloading)"><a href="https://dorgin.cheez.systems/sabnzbd"><img src="{{ asset('images/sabnzbd.png') }}" />SabNZBD</a></li>
-                            <li data-toggle="tooltip" data-placement="top" title="Manage and select movies to download"><a href="https://dorgin.cheez.systems/sabnzbd"><img src="{{ asset('images/couch.png') }}" />Couch Potato</a></li>
-                            <li data-toggle="tooltip" data-placement="top" title="Manage and select TV shows to download"><a href="https://dorgin.cheez.systems/sabnzbd"><img src="{{ asset('images/sonarr.png') }}" />Sonarr</a></li>
+                            <li data-toggle="tooltip" data-placement="top" title="Manage and select movies to download"><a href="https://dorgin.cheez.systems/couchpotato"><img src="{{ asset('images/couch.png') }}" />Couch Potato</a></li>
+                            <li data-toggle="tooltip" data-placement="top" title="Manage and select TV shows to download"><a href="https://dorgin.cheez.systems/sonarr"><img src="{{ asset('images/sonarr.png') }}" />Sonarr</a></li>
                             <li data-toggle="tooltip" data-placement="top" title="Torrent download client (does downloading on the rare occasion we use torrents)"><a href="https://talyn.cheez.systems:8112"><img src="{{ asset('images/deluge.png') }}"/>Deluge</a></li>
                         </ul>
                     </div>
