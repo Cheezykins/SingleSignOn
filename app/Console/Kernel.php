@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\GetDiskSpace;
 use App\Console\Commands\UserAdd;
 use App\Console\Commands\UserDelete;
+use App\Console\Commands\UserList;
 use App\Console\Commands\UserSetPassword;
 use App\Console\Commands\UserSetRoles;
 use Illuminate\Console\Scheduling\Schedule;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         GetDiskSpace::class,
         UserSetRoles::class,
         UserSetPassword::class,
-        UserDelete::class
+        UserDelete::class,
+        UserList::class
     ];
 
     /**
