@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserList extends Command
 {
