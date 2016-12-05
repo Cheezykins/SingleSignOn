@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
+
+
 /**
  * App\User
  *
@@ -56,21 +58,37 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
 
+    /**
+     * @return int
+     */
     public function getJWTIdentifier()
     {
         return $this->id;
     }
 
+    /**
+     * @return array
+     */
     public function getJWTCustomClaims()
     {
         return ['exp' => time() + 157784760];
     }
 
+    /**
+     * Verifies if a user has a role.
+     * @param $roleName
+     * @return bool
+     */
     public function hasRole($roleName)
     {
         return $this->roles()->whereCode($roleName)->count() > 0;
     }
 
+    /**
+     * Verifies if a user can access a domain name
+     * @param $domainName
+     * @return bool
+     */
     public function canAccess($domainName)
     {
         foreach ($this->roles as $role)
@@ -81,5 +99,26 @@ class User extends Authenticatable implements JWTSubject
             }
         }
         return false;
+    }
+
+    /**
+     * Get an array of links grouped by category name.
+     * @return array
+     */
+    public function linksByCategory()
+    {
+        $links = [];
+        foreach ($this->roles as $role)
+        {
+            foreach ($role->links as $link)
+            {
+                if (!array_key_exists($link->category->name, $links))
+                {
+                    $links[$link->category->name] = [];
+                }
+                $links[$link->category->name][] = $link;
+            }
+        }
+        return $links;
     }
 }
