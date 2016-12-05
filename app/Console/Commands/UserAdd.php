@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Role;
 use App\User;
 use Illuminate\Console\Command;
 use PassGen;
@@ -38,5 +39,16 @@ class UserAdd extends Command
 
         $this->info('User ' . $username . ' created successfully');
         $this->info('Password: ' . $password->getPlainText());
+
+        $roles = Role::whereUserDefault(true)->get();
+        if ($roles->count() > 0) {
+            $this->info('Adding default roles:');
+            foreach ($roles as $role)
+            {
+                $this->info($role->code);
+                $user->roles()->attach($role);
+            }
+            $this->info('Done');
+        }
     }
 }
