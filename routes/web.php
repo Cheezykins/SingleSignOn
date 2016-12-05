@@ -18,7 +18,7 @@ Route::post('logout', 'Auth\AuthController@logout')->name('logout');
 Route::group(['middleware' => ['checkcookie']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('changepass', 'Auth\PasswordController@changePass')->name('password.change');
-    Route::post('changepass', 'Auth\PasswordController@postChangePass');
+    Route::post('changepass', 'Auth\PasswordController@postChangePass')->name('password.postchange');
     Route::group(['middleware' => ['requireadmin']], function() {
         Route::get('admin', 'Admin\AdminController@index')->name('admin');
     });
