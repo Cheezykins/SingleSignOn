@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
+use PassGen;
 
 class UserAdd extends Command
 {
@@ -12,7 +13,7 @@ class UserAdd extends Command
      *
      * @var string
      */
-    protected $signature = 'user:add';
+    protected $signature = 'user:add {user? : The username to add}';
 
     /**
      * The console command description.
@@ -23,20 +24,19 @@ class UserAdd extends Command
 
     public function handle()
     {
-        $username = $this->ask("Enter a username");
-        $pass1 = $this->secret("Enter a password");
-        $pass2 = $this->secret("Repeat the password");
-
-        if ($pass1 !== $pass2) {
-            $this->error('Passwords do not match');
-            return;
+        $username = $this->argument('user');
+        if ($username === null) {
+            $username = $this->ask("Enter a username");
         }
+
+        $password = PassGen::generate(4);
 
         $user = new User();
         $user->username = $username;
-        $user->password = bcrypt($pass1);
+        $user->password = bcrypt($password->getPlainText());
         $user->save();
 
         $this->info('User ' . $username . ' created successfully');
+        $this->info('Password: ' . $password->getPlainText());
     }
 }

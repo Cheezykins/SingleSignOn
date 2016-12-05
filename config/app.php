@@ -177,7 +177,8 @@ $config = [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Cheezykins\PassGen\Vendor\Laravel\ServiceProvider::class
     ],
 
     /*
@@ -226,7 +227,8 @@ $config = [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTauth\Facades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTauth\Facades\JWTFactory::class,
+        'PassGen' => Cheezykins\PassGen\Vendor\Laravel\Facade::class
     ],
 
 ];

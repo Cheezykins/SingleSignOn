@@ -4,9 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d80d184166fba915af0e3a84de76b98e",
-    "content-hash": "e82c9d012b0d7e1a3f7fbb61f228ba31",
+    "hash": "350df7a4c9ac8bbe277e5258b7bc17f2",
+    "content-hash": "5604d289277f8d6f48c4a868200f9f34",
     "packages": [
+        {
+            "name": "cheezykins/passgen",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Cheezykins/PassGen.git",
+                "reference": "886d4b68b002f6a185fd7c3e2a2fa4389cb7ee7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Cheezykins/PassGen/zipball/886d4b68b002f6a185fd7c3e2a2fa4389cb7ee7b",
+                "reference": "886d4b68b002f6a185fd7c3e2a2fa4389cb7ee7b",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": "^2.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.3.2",
+                "phpunit/php-code-coverage": "4.0.*",
+                "phpunit/phpunit": "5.4.*",
+                "squizlabs/php_codesniffer": "^2.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cheezykins\\PassGen\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Stretton",
+                    "email": "cstretton@gmail.com"
+                }
+            ],
+            "description": "A random password generator creating simple to remember passwords",
+            "time": "2016-12-05 11:08:59"
+        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
