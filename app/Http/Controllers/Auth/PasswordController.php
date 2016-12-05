@@ -37,6 +37,7 @@ class PasswordController extends Controller
         }
 
         Auth::user()->password = Hash::make($request->input('newpass'), ['rounds' => 12]);
+        Auth::user()->must_change_pass = false;
         Auth::user()->save();
         $request->session()->flash('message', 'Password changed successfully!');
         return redirect()->to('/');

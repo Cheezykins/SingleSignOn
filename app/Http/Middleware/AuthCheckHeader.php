@@ -17,7 +17,10 @@ class AuthCheckHeader
             return $this->bad();
         }
         try {
-            JWTAuth::setToken($token)->authenticate();
+            $user = JWTAuth::setToken($token)->authenticate();
+            if ($user->must_change_pass) {
+                return $this->bad();
+            }
         } catch (\Exception $e) {
             return $this->bad();
         }

@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property integer $id
  * @property string $username
  * @property string $password
+ * @property  boolean $must_change_pass
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Role[] $roles
@@ -21,6 +22,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereMustChangePass($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent

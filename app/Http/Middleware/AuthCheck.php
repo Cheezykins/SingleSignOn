@@ -4,16 +4,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Log;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Http\Request;
+use JWTAuth;
 
 class AuthCheck
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $token = \Cookie::get('cheezyssotoken');
         try {
-            JWTAuth::setToken($token)->authenticate();
+            $user = JWTAuth::setToken($token)->authenticate();
+            if ($request->route()->getName() != 'password.change' && $user->must_change_pass) {
+                $request->session()->flash('message', 'Your account has been marked for a password change');
+                return response()->redirectTo('password.change');
+            }
         } catch (\Exception $e) {
             return response()->redirectTo('login');
         }
