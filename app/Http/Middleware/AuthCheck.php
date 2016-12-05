@@ -16,7 +16,7 @@ class AuthCheck
             $user = JWTAuth::setToken($token)->authenticate();
             if ($request->route()->getName() != 'password.change' && $user->must_change_pass) {
                 $request->session()->flash('message', 'Your account has been marked for a password change');
-                return response()->redirectTo('password.change');
+                return response()->redirectToRoute('password.change');
             }
         } catch (\Exception $e) {
             return response()->redirectTo('login');
