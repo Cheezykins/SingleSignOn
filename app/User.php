@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property integer $id
  * @property string $username
  * @property string $password
- * @property  boolean $must_change_pass
+ * @property boolean $must_change_pass
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Role[] $roles

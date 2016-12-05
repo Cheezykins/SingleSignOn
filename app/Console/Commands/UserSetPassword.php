@@ -32,6 +32,8 @@ class UserSetPassword extends Command
 
             $user->password = Hash::make($pass->getPlainText(), ['rounds' => 12]);
 
+            $user->must_change_pass = true;
+
             $this->info('New Password: ' . $pass->getPlainText());
 
         } catch (ModelNotFoundException $e) {
