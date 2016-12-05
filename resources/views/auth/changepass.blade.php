@@ -28,7 +28,7 @@
                             <label for="newpass" class="col-md-4 control-label">New Password</label>
 
                             <div class="col-md-6">
-                                <input id="newpass" type="password" class="form-control" name="newpass" required>
+                                <input pattern=".{10,}" id="newpass" type="password" class="form-control" name="newpass" required title="Minimum of 10 characters required">
 
                                 @if ($errors->has('newpass'))
                                     <span class="help-block">

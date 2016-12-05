@@ -20,7 +20,7 @@ class PasswordController extends Controller
     {
         $this->validate($request, [
             'currentpass' => 'required',
-            'newpass' => 'required',
+            'newpass' => 'required|min:10',
             'confirmpass' => 'required'
         ]);
 
@@ -36,7 +36,7 @@ class PasswordController extends Controller
             ]);
         }
 
-        Auth::user()->password = bcrypt($request->input('newpass'));
+        Auth::user()->password = Hash::make($request->input('newpass'), ['rounds' => 12]);
         Auth::user()->save();
         $request->session()->flash('message', 'Password changed successfully!');
         return redirect()->to('/');

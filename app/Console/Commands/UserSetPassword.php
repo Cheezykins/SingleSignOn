@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PassGen;
+use Hash;
 
 class UserSetPassword extends Command
 {
@@ -29,7 +30,7 @@ class UserSetPassword extends Command
 
             $pass = PassGen::generate(4);
 
-            $user->password = bcrypt($pass->getPlainText());
+            $user->password = Hash::make($pass->getPlainText(), ['rounds' => 12]);
 
             $this->info('New Password: ' . $pass->getPlainText());
 

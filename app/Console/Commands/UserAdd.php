@@ -6,6 +6,7 @@ use App\Role;
 use App\User;
 use Illuminate\Console\Command;
 use PassGen;
+use Hash;
 
 class UserAdd extends Command
 {
@@ -34,7 +35,7 @@ class UserAdd extends Command
 
         $user = new User();
         $user->username = $username;
-        $user->password = bcrypt($password->getPlainText());
+        $user->password = Hash::make($password->getPlainText(), ['rounds' => 12]);
         $user->save();
 
         $this->info('User ' . $username . ' created successfully');
