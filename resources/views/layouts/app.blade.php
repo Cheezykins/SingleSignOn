@@ -45,7 +45,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (!Auth::guest() && Auth::user()->hasRole('ADMIN'))
-                            <li><a href="{{ route('admin') }}">Admin</a></li>
+                            <li><a href="{{ route('admin.home') }}">Admin</a></li>
                         @endif
 
                     </ul>
