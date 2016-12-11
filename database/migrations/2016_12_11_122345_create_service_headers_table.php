@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServiceUpdatesTable extends Migration
+class CreateServiceHeadersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateServiceUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_updates', function (Blueprint $table) {
+        Schema::create('service_headers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('service_id')->unsigned();
-            $table->integer('service_status_id')->unsigned();
+            $table->unsignedInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
-            $table->foreign('service_status_id')->references('id')->on('service_statuses');
-            $table->text('log');
-            $table->unsignedBigInteger('responseTime');
+            $table->string('key');
+            $table->index(['key']);
+            $table->string('value');
             $table->timestamps();
-            $table->index(['updated_at']);
         });
     }
 
@@ -33,6 +31,6 @@ class CreateServiceUpdatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_updates');
+        Schema::dropIfExists('service_headers');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\GetDiskSpace;
+use App\Console\Commands\GetServiceStatus;
 use App\Console\Commands\UserAdd;
 use App\Console\Commands\UserDelete;
 use App\Console\Commands\UserList;
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
         UserSetRoles::class,
         UserSetPassword::class,
         UserDelete::class,
-        UserList::class
+        UserList::class,
+        GetServiceStatus::class
     ];
 
     /**

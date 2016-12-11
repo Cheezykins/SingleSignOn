@@ -16,8 +16,13 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
+            $table->string('method');
+            $table->string('payload');
             $table->string('name');
             $table->string('description');
+            $table->boolean('active');
+            $table->unsignedBigInteger('slow_threshold');
+            $table->unsignedBigInteger('very_slow_threshold');
             $table->timestamps();
         });
     }
