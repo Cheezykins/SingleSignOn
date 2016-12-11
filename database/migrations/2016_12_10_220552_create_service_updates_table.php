@@ -19,6 +19,8 @@ class CreateServiceUpdatesTable extends Migration
             $table->integer('service_status_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('service_status_id')->references('id')->on('service_statuses');
+            $table->text('log');
+            $table->unsignedBigInteger('responseTime');
             $table->timestamps();
         });
     }

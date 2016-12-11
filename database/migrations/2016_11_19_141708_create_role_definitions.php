@@ -44,4 +44,9 @@ class CreateRoleDefinitions extends Migration
         $admin->save();
     }
 
+    public function down()
+    {
+
+    }
+
 }
