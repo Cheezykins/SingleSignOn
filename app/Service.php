@@ -123,8 +123,19 @@ class Service extends Model
 
         } catch (RequestException $e) {
             $update->setStatus(ServiceStatus::STATUS_DOWN);
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $log = 'Response code: ' . $response->getStatusCode() . PHP_EOL;
+                $log .= 'Response reason: ' . $response->getReasonPhrase() . PHP_EOL;
+                $log .= 'Body:' . PHP_EOL;
+                $log .= $response->getBody()->getContents();
+                $update->log = $log;
+            } else {
+                $update->log = 'Exception thrown: ' . $e->getMessage();
+            }
         } catch (\Exception $e) {
             $update->setStatus(ServiceStatus::STATUS_DOWN);
+            $update->log = 'Exception thrown: ' . $e->getMessage();
         }
 
         return $update;

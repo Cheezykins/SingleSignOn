@@ -35,9 +35,12 @@ class GetServiceStatus extends Command
             if ($lastUpdate == null) {
                 $lastUpdate = $service->createInitialUpdate();
             }
+
+            $this->info('Current status is ' . $lastUpdate->service_status->status);
+
             $newUpdate = $service->determineServiceUpdate();
 
-            if ($newUpdate->service_status !== $lastUpdate->service_status) {
+            if ($newUpdate->service_status->status !== $lastUpdate->service_status->status) {
                 $newUpdate->service_status()->associate($this->setStatus($lastUpdate->service_status->status, $newUpdate->service_status->status));
                 $newUpdate->save();
                 $this->info('Status for ' . $service->name . ' set to ' . $newUpdate->service_status->status);
@@ -57,13 +60,16 @@ class GetServiceStatus extends Command
      */
     protected function setStatus($existing, $new)
     {
-        if ($existing == ServiceStatus::STATUS_UP && $new == ServiceStatus::STATUS_DOWN) {
+        $upStatuses = [ServiceStatus::STATUS_UP, ServiceStatus::STATUS_SLOW, ServiceStatus::STATUS_VSLOW];
+        $existingUp = in_array($existing, $upStatuses);
+        $newUp = in_array($new, $upStatuses);
+        if ($existingUp && $new == ServiceStatus::STATUS_DOWN) {
             return ServiceStatus::whereStatus(ServiceStatus::STATUS_FAILING)->firstOrFail();
         }
-        if ($existing == ServiceStatus::STATUS_FAILING && $new == ServiceStatus::STATUS_UP) {
+        if ($existing == ServiceStatus::STATUS_FAILING && $newUp) {
             return ServiceStatus::whereStatus(ServiceStatus::STATUS_RECOVERING)->firstOrFail();
         }
-        if ($existing == ServiceStatus::STATUS_DOWN && $new == ServiceStatus::STATUS_UP) {
+        if ($existing == ServiceStatus::STATUS_DOWN && $newUp) {
             return ServiceStatus::whereStatus(ServiceStatus::STATUS_RECOVERING)->firstOrFail();
         }
         if ($existing == ServiceStatus::STATUS_RECOVERING && $new == ServiceStatus::STATUS_DOWN) {
