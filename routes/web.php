@@ -22,10 +22,13 @@ Route::group(['middleware' => ['checkcookie']], function () {
     Route::group(['middleware' => ['requireadmin'], 'as' => 'admin.'], function() {
         Route::get('admin', 'Admin\AdminController@index')->name('home');
         Route::resource('admin/users', 'Admin\UserController');
+        Route::resource('admin/services', 'Admin\ServiceController');
     });
 });
 
 
 Route::group(['middleware' => ['checkheader']], function() {
-    Route::get('/auth', 'HomeController@check')->name('check');
+    Route::get('auth', function() {
+        abort(403, "You are not welcome");
+    })->name('check');
 });

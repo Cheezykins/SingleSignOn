@@ -45,7 +45,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (!Auth::guest() && Auth::user()->hasRole('ADMIN'))
-                            <li><a href="{{ route('admin.home') }}">Admin</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Admin <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ route('admin.users.index') }}">Users</a></li>
+                                    <li><a href="{{ route('admin.services.index') }}">Services</a></li>
+                                </ul>
+                            </li>
                         @endif
 
                     </ul>

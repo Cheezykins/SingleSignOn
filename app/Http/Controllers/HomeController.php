@@ -21,12 +21,4 @@ class HomeController extends Controller
         $diskSpace = Disk::all();
         return view('home', ['disks' => $diskSpace]);
     }
-
-    /**
-     * Route intercepted by middleware.
-     */
-    public function check()
-    {
-        abort(403, "You are not welcome");
-    }
 }
