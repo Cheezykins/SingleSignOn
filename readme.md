@@ -4,6 +4,16 @@ A site to provide access control to sites and services through Nginx, Built on [
 
 Nginx requires the [auth_request](http://nginx.org/en/docs/http/ngx_http_auth_request_module.html) module.
 
+## Site setup
+
+Sets up like any other Laravel site.
+
+ * Configure environment variables (You may use .env in the project root to assign them via text, see .env.example for details)
+ * Run database migrations ```php artisan migrate```
+ * Add an initial user ```php artisan user:add```
+ * Set them as an admin ```php artisan user:set-roles <username> ADMIN```
+ * Browse to the site and log in, using the password shown after the add user command, you will be forced to change it on first login.
+
 ## Nginx Setup for protected hosts
 
 Nginx acts as a reverse proxy to the protected sites. For each request, Nginx makes an internal request to the single sign on site to validate that a user is allowed access.
