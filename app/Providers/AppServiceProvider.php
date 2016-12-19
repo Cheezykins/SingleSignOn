@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Service;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(ClientInterface::class, function () {
+            return new Client();
+        });
     }
 }

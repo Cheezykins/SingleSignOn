@@ -2,7 +2,7 @@
 
 namespace App;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Service extends Model
 {
+
     public function service_updates()
     {
         return $this->hasMany(ServiceUpdate::class);
@@ -97,14 +98,14 @@ class Service extends Model
         $update = new ServiceUpdate();
         $update->service()->associate($this);
 
-        $client = new Client();
-
         $options = [
             RequestOptions::HEADERS => $this->header_array(),
             RequestOptions::QUERY => $this->query_parameters_array(),
             RequestOptions::JSON => $this->payload,
             RequestOptions::ON_STATS => [$update, 'fillStatistics']
         ];
+
+        $client = app()->make(ClientInterface::class);
 
         try {
             $promise = $client->requestAsync($this->method, $this->url, $options)->then([$update, 'fillResults']);

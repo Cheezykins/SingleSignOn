@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Service;
 use App\ServiceStatus;
-use App\ServiceUpdate;
 use Illuminate\Console\Command;
 
 class GetServiceStatus extends Command
@@ -15,6 +14,7 @@ class GetServiceStatus extends Command
      * @var string
      */
     protected $signature = 'service-status:get';
+    protected $client;
 
     /**
      * The console command description.
@@ -41,7 +41,8 @@ class GetServiceStatus extends Command
             $newUpdate = $service->determineServiceUpdate();
 
             if ($newUpdate->service_status->status !== $lastUpdate->service_status->status) {
-                $newUpdate->service_status()->associate($this->setStatus($lastUpdate->service_status->status, $newUpdate->service_status->status));
+                $newUpdate->service_status()->associate($this->setStatus($lastUpdate->service_status->status,
+                    $newUpdate->service_status->status));
                 $newUpdate->save();
                 $this->info('Status for ' . $service->name . ' set to ' . $newUpdate->service_status->status);
             } else {
