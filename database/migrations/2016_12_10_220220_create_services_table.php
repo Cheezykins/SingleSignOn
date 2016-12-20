@@ -17,7 +17,7 @@ class CreateServicesTable extends Migration
             $table->increments('id');
             $table->string('url');
             $table->string('method');
-            $table->string('payload');
+            $table->string('payload')->default('');
             $table->string('name');
             $table->string('description');
             $table->boolean('active');

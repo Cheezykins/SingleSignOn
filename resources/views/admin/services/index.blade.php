@@ -25,7 +25,16 @@
                                     <td>
                                         <a href="{{ route('admin.services.show', ['service' => $service]) }}">View</a> /
                                         <a href="{{ route('admin.services.edit', ['service' => $service]) }}">Edit</a> /
-                                        <a href="{{ route('admin.services.destroy', ['service' => $service]) }}">Delete</a>
+                                        <a href="#"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('delete-form').submit();">
+                                            Delete
+                                        </a>
+
+                                        <form id="delete-form" action="{{ route('admin.services.destroy', ['service' => $service]) }}" method="POST" style="display: none;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            {{ csrf_field() }}
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

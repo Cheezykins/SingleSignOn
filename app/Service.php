@@ -10,19 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Service
  *
- * @property integer $id
+ * @property int $id
  * @property string $url
  * @property string $method
  * @property string $payload
  * @property string $name
  * @property string $description
- * @property boolean $active
- * @property integer $slow_threshold
- * @property integer $very_slow_threshold
+ * @property bool $active
+ * @property int $slow_threshold
+ * @property int $very_slow_threshold
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceUpdate[] $service_updates
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceHeader[] $service_headers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceQueryParameter[] $service_query_parameters
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereMethod($value)
