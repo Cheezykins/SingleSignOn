@@ -39,16 +39,25 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_updates()
     {
         return $this->hasMany(ServiceUpdate::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_headers()
     {
         return $this->hasMany(ServiceHeader::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_query_parameters()
     {
         return $this->hasMany(ServiceQueryParameter::class);
@@ -142,6 +151,9 @@ class Service extends Model
         return $update;
     }
 
+    /**
+     * @return ServiceUpdate
+     */
     public function createInitialUpdate()
     {
         $update = new ServiceUpdate();
