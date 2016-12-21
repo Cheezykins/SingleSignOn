@@ -34,6 +34,7 @@ class GetDiskSpace extends Command
             try {
                 $this->info('Trying to find disk in database');
                 $disk = Disk::wherePath($diskData->name)->firstOrFail();
+                $disk->addToHistory();
             } catch (ModelNotFoundException $e) {
                 $this->info('No disk found, creating new entry');
                 $disk = new Disk();

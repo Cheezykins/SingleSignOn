@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $free_space
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\DiskHistory[] $history
  * @method static \Illuminate\Database\Query\Builder|\App\Disk whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Disk wherePath($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Disk whereCapacity($value)
@@ -25,17 +26,25 @@ use Illuminate\Database\Eloquent\Model;
 class Disk extends Model
 {
 
-    public function usedSpace()
+    /**
+     * Creates a history object for the disk at its current setting.
+     */
+    public function addToHistory()
     {
-        return $this->capacity - $this->free_space;
+        $history = new DiskHistory();
+        $history->entry_date = $this->updated_at;
+        $history->capacity = $this->capacity;
+        $history->free_space = $this->free_space;
+        $history->disk()->associate($this);
+        $history->save();
     }
 
-    public function percentageUsed()
+    public function history()
     {
-        return round(100 - (($this->free_space / $this->capacity) * 100), 2);
+        return $this->hasMany(DiskHistory::class);
     }
 
-    protected static function renderBytes($bytes, $precision = 2)
+    public static function renderBytes($bytes, $precision = 2)
     {
         $factors = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
         $factor = floor((strlen($bytes) - 1) / 3);

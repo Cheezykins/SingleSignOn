@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceUpdate[] $service_updates
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceHeader[] $service_headers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceQueryParameter[] $service_query_parameters
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereMethod($value)
