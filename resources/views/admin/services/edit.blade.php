@@ -46,9 +46,9 @@
 
                                 <div class="col-md-6">
                                     Yes <input type="radio" value="1" name="active" id="activeYes"
-                                               @if($service->active)checked@endif>
+                                               @if($service->active)checked @endif>
                                     No <input type="radio" value="0" name="active" id="activeNo"
-                                              @if(!$service->active)checked@endif>
+                                              @if(!$service->active)checked @endif>
 
                                     @if ($errors->has('active'))
                                         <span class="help-block">
@@ -81,12 +81,12 @@
                                 <div class="col-md-6">
                                     <select id="method" class="form-control" name="method">
                                         <option value="_none">Select a method</option>
-                                        <option value="GET" @if($service->method == 'GET')selected@endif>GET</option>
-                                        <option value="PUT" @if($service->method == 'PUT')selected@endif>PUT</option>
-                                        <option value="POST" @if($service->method == 'POST')selected@endif>POST</option>
-                                        <option value="PATCH" @if($service->method == 'PATCH')selected@endif>PATCH
+                                        <option value="GET" @if($service->method == 'GET')selected @endif>GET</option>
+                                        <option value="PUT" @if($service->method == 'PUT')selected @endif>PUT</option>
+                                        <option value="POST" @if($service->method == 'POST')selected @endif>POST</option>
+                                        <option value="PATCH" @if($service->method == 'PATCH')selected @endif>PATCH
                                         </option>
-                                        <option value="DELETE" @if($service->method == 'DELETE')selected@endif>DELETE
+                                        <option value="DELETE" @if($service->method == 'DELETE')selected @endif>DELETE
                                         </option>
                                     </select>
 
@@ -128,7 +128,7 @@
                                 </div>
 
                                 <ul id="headers">
-                                    @include('admin.services.partials._multiItem', ['items' => $service->service_headers])
+                                    @include('admin.services.partials._multiItem', ['items' => $service->headers_array()])
                                 </ul>
 
                             </div>
@@ -148,7 +148,7 @@
                                 </div>
 
                                 <ul id="query">
-                                    @include('admin.services.partials._multiItem', ['items' => $service->service_query_parameters])
+                                    @include('admin.services.partials._multiItem', ['items' => $service->query_parameters_array()])
                                 </ul>
                             </div>
 
@@ -157,7 +157,7 @@
                                     Threshold</label>
 
                                 <div class="col-md-6">
-                                    <input id="slow_threshold" type="text" value="{{ old('slow_threshold') }}"
+                                    <input id="slow_threshold" type="text" value="{{ $service->slow_threshold }}"
                                            class="form-control" name="slow_threshold" required pattern="[0-9]+">
 
                                     @if ($errors->has('slow_threshold'))
@@ -173,7 +173,7 @@
                                     Threshold</label>
 
                                 <div class="col-md-6">
-                                    <input id="very_slow_threshold" type="text" value="{{ old('very_slow_threshold') }}"
+                                    <input id="very_slow_threshold" type="text" value="{{ $service->very_slow_threshold }}"
                                            class="form-control" name="very_slow_threshold" required>
 
                                     @if ($errors->has('very_slow_threshold'))

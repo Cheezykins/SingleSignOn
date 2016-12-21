@@ -77,7 +77,7 @@ class Service extends Model
      * Returns the headers as an array.
      * @return array;
      */
-    public function header_array()
+    public function headers_assoc()
     {
         $collection = [];
         foreach ($this->service_headers as $header) {
@@ -90,11 +90,43 @@ class Service extends Model
      * Returns the query parameters as an array.
      * @return array;
      */
-    public function query_parameters_array()
+    public function query_parameters_assoc()
     {
         $collection = [];
         foreach ($this->service_query_parameters as $header) {
             $collection[$header->key] = $header->value;
+        }
+        return $collection;
+    }
+
+    /**
+     * Returns the headers as an array.
+     * @return array;
+     */
+    public function headers_array()
+    {
+        $collection = [];
+        foreach ($this->service_headers as $header) {
+            $collection[] = [
+                'key' => $header->key,
+                'value' => $header->value
+            ];
+        }
+        return $collection;
+    }
+
+    /**
+     * Returns the query parameters as an array.
+     * @return array;
+     */
+    public function query_parameters_array()
+    {
+        $collection = [];
+        foreach ($this->service_query_parameters as $header) {
+            $collection[] = [
+                'key' => $header->key,
+                'value' => $header->value
+            ];
         }
         return $collection;
     }
@@ -109,8 +141,8 @@ class Service extends Model
         $update->service()->associate($this);
 
         $options = [
-            RequestOptions::HEADERS => $this->header_array(),
-            RequestOptions::QUERY => $this->query_parameters_array(),
+            RequestOptions::HEADERS => $this->headers_assoc(),
+            RequestOptions::QUERY => $this->query_parameters_assoc(),
             RequestOptions::JSON => $this->payload,
             RequestOptions::ON_STATS => [$update, 'fillStatistics']
         ];

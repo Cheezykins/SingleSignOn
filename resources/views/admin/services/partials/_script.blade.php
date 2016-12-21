@@ -32,9 +32,14 @@
             var $li = $('<li>');
             var $key = $('<input>').addClass('keyField').attr('type', 'hidden').val(key);
             var $value = $('<input>').addClass('valueField').attr('type', 'hidden').val(value);
+            var $button = $('<button>').text('Remove').addClass('btn').addClass('btn-danger').click(function(evt) {
+                evt.preventDefault();
+                removeItem(evt.target);
+            });
             $li.append($key);
             $li.append($value);
             $li.append(getContentField(key, value));
+            $li.append($button);
             $collection.append($li);
         }
 
@@ -52,5 +57,10 @@
 
     function getContentField(key, value) {
         return $('<span>').addClass('contentInfo').append('<strong>' + key + '</strong>: ' + value);
+    }
+
+    function removeItem(node) {
+        $(node).closest('li').remove();
+        sortInputs();
     }
 </script>
