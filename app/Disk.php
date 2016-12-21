@@ -44,6 +44,30 @@ class Disk extends Model
         return $this->hasMany(DiskHistory::class);
     }
 
+    public function usedSpace()
+    {
+        return $this->capacity - $this->free_space;
+    }
+
+    public function percentageUsed()
+    {
+        return round(100 - (($this->free_space / $this->capacity) * 100), 2);
+    }
+
+    public function freeSpaceFormatted($precision = 2) {
+        return Disk::renderBytes($this->free_space, $precision);
+    }
+
+    public function usedSpaceFormatted($precision = 2)
+    {
+        return Disk::renderBytes($this->usedSpace(), $precision);
+    }
+
+    public function capacityFormatted($precision = 2)
+    {
+        return Disk::renderBytes($this->capacity, $precision);
+    }
+
     public static function renderBytes($bytes, $precision = 2)
     {
         $factors = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
