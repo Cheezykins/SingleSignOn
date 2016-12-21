@@ -54,7 +54,8 @@ class Disk extends Model
         return round(100 - (($this->free_space / $this->capacity) * 100), 2);
     }
 
-    public function freeSpaceFormatted($precision = 2) {
+    public function freeSpaceFormatted($precision = 2)
+    {
         return Disk::renderBytes($this->free_space, $precision);
     }
 
@@ -73,19 +74,5 @@ class Disk extends Model
         $factors = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.{$precision}f %s", $bytes / pow(1024, $factor), $factors[(int)$factor]);
-    }
-
-    public function freeSpaceFormatted($precision = 2) {
-        return self::renderBytes($this->free_space, $precision);
-    }
-
-    public function usedSpaceFormatted($precision = 2)
-    {
-        return self::renderBytes($this->usedSpace(), $precision);
-    }
-
-    public function capacityFormatted($precision = 2)
-    {
-        return self::renderBytes($this->capacity, $precision);
     }
 }

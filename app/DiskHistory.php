@@ -44,7 +44,8 @@ class DiskHistory extends Model
         return round(100 - (($this->free_space / $this->capacity) * 100), 2);
     }
 
-    public function freeSpaceFormatted($precision = 2) {
+    public function freeSpaceFormatted($precision = 2)
+    {
         return Disk::renderBytes($this->free_space, $precision);
     }
 
