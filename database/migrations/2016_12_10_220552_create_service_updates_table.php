@@ -17,8 +17,8 @@ class CreateServiceUpdatesTable extends Migration
             $table->increments('id');
             $table->integer('service_id')->unsigned();
             $table->integer('service_status_id')->unsigned();
-            $table->foreign('service_id')->references('id')->on('services');
-            $table->foreign('service_status_id')->references('id')->on('service_statuses');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->foreign('service_status_id')->references('id')->on('service_statuses')->onDelete('cascade');
             $table->text('log');
             $table->unsignedBigInteger('responseTime');
             $table->timestamps();

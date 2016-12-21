@@ -29,10 +29,9 @@ class UserSetPassword extends Command
             $this->info('Changing password for ' . $userName);
 
             $pass = PassGen::generate(4);
-
             $user->password = Hash::make($pass->getPlainText(), ['rounds' => 12]);
-
             $user->must_change_pass = true;
+            $user->save();
 
             $this->info('New Password: ' . $pass->getPlainText());
 

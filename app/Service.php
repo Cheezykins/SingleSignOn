@@ -2,7 +2,7 @@
 
 namespace App;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Service
  *
- * @property integer $id
+ * @property int $id
  * @property string $url
  * @property string $method
  * @property string $payload
  * @property string $name
  * @property string $description
- * @property boolean $active
- * @property integer $slow_threshold
- * @property integer $very_slow_threshold
+ * @property bool $active
+ * @property int $slow_threshold
+ * @property int $very_slow_threshold
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceUpdate[] $service_updates
@@ -39,16 +39,26 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Service extends Model
 {
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_updates()
     {
         return $this->hasMany(ServiceUpdate::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_headers()
     {
         return $this->hasMany(ServiceHeader::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function service_query_parameters()
     {
         return $this->hasMany(ServiceQueryParameter::class);
@@ -67,7 +77,7 @@ class Service extends Model
      * Returns the headers as an array.
      * @return array;
      */
-    public function header_array()
+    public function headers_assoc()
     {
         $collection = [];
         foreach ($this->service_headers as $header) {
@@ -80,11 +90,43 @@ class Service extends Model
      * Returns the query parameters as an array.
      * @return array;
      */
-    public function query_parameters_array()
+    public function query_parameters_assoc()
     {
         $collection = [];
         foreach ($this->service_query_parameters as $header) {
             $collection[$header->key] = $header->value;
+        }
+        return $collection;
+    }
+
+    /**
+     * Returns the headers as an array.
+     * @return array;
+     */
+    public function headers_array()
+    {
+        $collection = [];
+        foreach ($this->service_headers as $header) {
+            $collection[] = [
+                'key' => $header->key,
+                'value' => $header->value
+            ];
+        }
+        return $collection;
+    }
+
+    /**
+     * Returns the query parameters as an array.
+     * @return array;
+     */
+    public function query_parameters_array()
+    {
+        $collection = [];
+        foreach ($this->service_query_parameters as $header) {
+            $collection[] = [
+                'key' => $header->key,
+                'value' => $header->value
+            ];
         }
         return $collection;
     }
@@ -98,14 +140,14 @@ class Service extends Model
         $update = new ServiceUpdate();
         $update->service()->associate($this);
 
-        $client = new Client();
-
         $options = [
-            RequestOptions::HEADERS => $this->header_array(),
-            RequestOptions::QUERY => $this->query_parameters_array(),
+            RequestOptions::HEADERS => $this->headers_assoc(),
+            RequestOptions::QUERY => $this->query_parameters_assoc(),
             RequestOptions::JSON => $this->payload,
             RequestOptions::ON_STATS => [$update, 'fillStatistics']
         ];
+
+        $client = app()->make(ClientInterface::class);
 
         try {
             $promise = $client->requestAsync($this->method, $this->url, $options)->then([$update, 'fillResults']);
@@ -142,6 +184,9 @@ class Service extends Model
         return $update;
     }
 
+    /**
+     * @return ServiceUpdate
+     */
     public function createInitialUpdate()
     {
         $update = new ServiceUpdate();
