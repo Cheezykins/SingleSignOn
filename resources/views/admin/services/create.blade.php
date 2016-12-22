@@ -122,11 +122,11 @@
                                                                           onclick="addHeader();">+</button></span>
                                 </div>
 
-                                <ul id="headers">
-                                    @include('admin.services.partials._multiItem', ['items' => old('headers', [])])
-                                </ul>
-
                             </div>
+
+                            <ul class="form-group" id="headers">
+                                @include('admin.services.partials._multiItem', ['items' => old('headers', []), 'type' => 'headers'])
+                            </ul>
 
                             <div class="form-group{{ $errors->has('query') ? ' has-error' : '' }}">
                                 <label for="query" class="col-md-4 control-label">Request Query String</label>
@@ -141,11 +141,11 @@
                                                                           class="btn btn-success btn-add" type="button"
                                                                           onclick="addQuery();">+</button></span>
                                 </div>
-
-                                <ul id="query">
-                                    @include('admin.services.partials._multiItem', ['items' => old('query', [])])
-                                </ul>
                             </div>
+
+                            <ul class="form-group" id="query">
+                                @include('admin.services.partials._multiItem', ['items' => old('query', []), 'type' => 'query'])
+                            </ul>
 
                             <div class="form-group{{ $errors->has('slow_threshold') ? ' has-error' : '' }}">
                                 <label for="slow_threshold" class="col-md-4 control-label">Service Slow

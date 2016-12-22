@@ -32,6 +32,11 @@ class ServiceStatus extends Model
     const STATUS_SLOW = 'Up: Slow';
     const STATUS_VSLOW = 'Up: Very Slow';
 
+    const GROUP_NEUTRAL = 'Neutral';
+    const GROUP_GOOD = 'Good';
+    const GROUP_BAD = 'Bad';
+    const GROUP_WARNING = 'Warning';
+
     public function service_updates()
     {
         return $this->hasMany(ServiceUpdate::class);

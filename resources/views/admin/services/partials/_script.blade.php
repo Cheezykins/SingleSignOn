@@ -23,23 +23,24 @@
         $collection.find('li').each(function (index, node) {
             if ($(node).find('.keyField').val() == key) {
                 $(node).find('.valueField').val(value);
-                $(node).find('.contentInfo').replaceWith(getContentField(key, value));
+                $(node).find('.showValue').html(value);
                 updatedExisting = true;
             }
         });
 
         if (!updatedExisting) {
-            var $li = $('<li>');
+            var $li = $('<li><div class="col-md-3 col-md-offset-4 showKey"></div><div class="col-md-2 showValue"></div><div class="col-md-2 showButton"></div><div class="clearfix"></div></li>');
             var $key = $('<input>').addClass('keyField').attr('type', 'hidden').val(key);
             var $value = $('<input>').addClass('valueField').attr('type', 'hidden').val(value);
-            var $button = $('<button>').text('Remove').addClass('btn').addClass('btn-danger').click(function(evt) {
+            var $button = $('<button>').text('Remove').addClass('btn btn-danger btn-sm').click(function (evt) {
                 evt.preventDefault();
                 removeItem(evt.target);
             });
-            $li.append($key);
-            $li.append($value);
-            $li.append(getContentField(key, value));
-            $li.append($button);
+            $li.prepend($key);
+            $li.prepend($value);
+            $li.find('.showKey').html(key);
+            $li.find('.showValue').html(value);
+            $li.find('.showButton').append($button);
             $collection.append($li);
         }
 
@@ -49,14 +50,10 @@
     function sortInputs() {
         $.each(['query', 'headers'], function (index, value) {
             $('ul#' + value).find('li').each(function (innerIndex, node) {
-                $(node).find('.keyField').attr('name', 'headers[' + innerIndex + '][key]');
-                $(node).find('.valueField').attr('name', 'headers[' + innerIndex + '][value]');
+                $(node).find('.keyField').attr('name', value + '[' + innerIndex + '][key]');
+                $(node).find('.valueField').attr('name', value + '[' + innerIndex + '][value]');
             });
         });
-    }
-
-    function getContentField(key, value) {
-        return $('<span>').addClass('contentInfo').append('<strong>' + key + '</strong>: ' + value);
     }
 
     function removeItem(node) {

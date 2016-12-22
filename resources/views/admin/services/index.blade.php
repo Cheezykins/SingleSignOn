@@ -13,6 +13,7 @@
                                 <th>Service ID</th>
                                 <th>Name</th>
                                 <th>Active</th>
+                                <th>Last State Seen</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -22,6 +23,7 @@
                                     <td><a href="{{ route('admin.services.show', ['service' => $service]) }}">{{ $service->id }}</a></td>
                                     <td>{{ $service->name }}</td>
                                     <td>{{ $service->active }}</td>
+                                    <td>{!! \App\ViewHelpers\StatusLabel::forStatus($service->last_update()->service_status) !!}</td>
                                     <td>
                                         <a href="{{ route('admin.services.show', ['service' => $service]) }}">View</a> /
                                         <a href="{{ route('admin.services.edit', ['service' => $service]) }}">Edit</a> /

@@ -10,6 +10,21 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+
+    protected $rules = [
+        'url' => 'required|url',
+        'method' => 'required|in:GET,POST,PUT,DELETE,PATCH',
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'active' => 'required|boolean',
+        'slow_threshold' => 'required|integer',
+        'very_slow_threshold' => 'required|integer',
+        'headers.*.key' => 'filled|required_with:headers.*.value',
+        'headers.*.value' => 'required_with:headers.*.key',
+        'query.*.key' => 'filled|required_with:query.*.value',
+        'query.*.value' => 'required_with:query.*.key'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -39,55 +54,37 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'url' => 'required|url',
-            'method' => 'required|in:GET,POST,PUT,DELETE,PATCH',
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'active' => 'required|boolean',
-            'slow_threshold' => 'required|integer',
-            'very_slow_threshold' => 'required|integer',
-            'headers.*.key' => 'filled|alpha',
-            'headers.*.value' => 'required_with:headers.*.key',
-            'query.*.key' => 'filled|alpha',
-            'query.*.value' => 'required_with:headers.*.key'
-        ]);
+        $this->validate($request, $this->rules);
 
         $service = new Service();
-        $service->url = $request->input('url');
-        $service->method = $request->input('method');
-        $service->name = $request->input('name');
-        $service->description = $request->input('description');
-        if ($request->has('payload')) {
-            $service->payload = $request->input('payload');
-        }
-        $service->active = $request->input('active');
-        $service->slow_threshold = $request->input('slow_threshold');
-        $service->very_slow_threshold = $request->input('very_slow_threshold');
-        $service->save();
 
-        if ($request->has('headers')) {
-            foreach ($request->input('headers') as $header) {
-                $newHeader = new ServiceHeader();
-                $newHeader->key = $header['key'];
-                $newHeader->value = $header['value'];
-                $newHeader->service()->associate($service);
-                $newHeader->save();
-            }
-        }
+        $this->updateService($service, $request);
+        $this->generateKeyValueObject($service, $request, 'headers', ServiceHeader::class);
+        $this->generateKeyValueObject($service, $request, 'query', ServiceQueryParameter::class);
 
-        if ($request->has('query')) {
-            foreach ($request->input('query') as $query) {
-                $newHeader = new ServiceQueryParameter();
-                $newHeader->key = $query['key'];
-                $newHeader->value = $query['value'];
-                $newHeader->service()->associate($service);
-                $newHeader->save();
-            }
-        }
+        $service->createInitialUpdate();
 
         $request->session()->flash('message', 'Service created successfully');
         return response()->redirectToRoute('admin.services.index');
+    }
+
+    /**
+     * @param Service $service
+     * @param Request $request
+     * @param string $param
+     * @param string $type
+     */
+    public function generateKeyValueObject(Service $service, Request $request, $param, $type)
+    {
+        if ($request->has($param)) {
+            foreach ($request->input($param) as $item) {
+                $newObject = new $type();
+                $newObject->key = $item['key'];
+                $newObject->value = $item['value'];
+                $newObject->service()->associate($service);
+                $newObject->save();
+            }
+        }
     }
 
     /**
@@ -114,6 +111,7 @@ class ServiceController extends Controller
         return view('admin.services.edit', ['service' => $service]);
     }
 
+
     /**
      * Update the specified resource in storage.
      *
@@ -123,7 +121,43 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, $this->rules);
+
+        /** @var Service $service */
         $service = Service::findOrFail($id);
+
+        $this->updateService($service, $request);
+        $service->service_headers()->delete();
+        $service->service_query_parameters()->delete();
+
+        $this->generateKeyValueObject($service, $request, 'headers', ServiceHeader::class);
+        $this->generateKeyValueObject($service, $request, 'query', ServiceQueryParameter::class);
+
+        $service->save();
+
+        $request->session()->flash('message', "{$service->name} has been updated.");
+
+        return response()->redirectToRoute('admin.services.index');
+    }
+
+    /**
+     * Update the service
+     * @param Service $service
+     * @param Request $request
+     */
+    protected function updateService(Service $service, Request $request)
+    {
+        $service->url = $request->input('url');
+        $service->method = $request->input('method');
+        $service->name = $request->input('name');
+        $service->description = $request->input('description');
+        if ($request->has('payload')) {
+            $service->payload = $request->input('payload');
+        }
+        $service->active = $request->input('active');
+        $service->slow_threshold = $request->input('slow_threshold');
+        $service->very_slow_threshold = $request->input('very_slow_threshold');
+        $service->save();
     }
 
     /**

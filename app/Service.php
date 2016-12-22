@@ -122,10 +122,10 @@ class Service extends Model
     public function query_parameters_array()
     {
         $collection = [];
-        foreach ($this->service_query_parameters as $header) {
+        foreach ($this->service_query_parameters as $param) {
             $collection[] = [
-                'key' => $header->key,
-                'value' => $header->value
+                'key' => $param->key,
+                'value' => $param->value
             ];
         }
         return $collection;

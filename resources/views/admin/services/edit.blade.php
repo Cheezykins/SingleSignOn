@@ -8,8 +8,9 @@
                     <div class="panel-heading">Create New Service</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST"
-                              action="{{ route('admin.services.store') }}">
+                              action="{{ route('admin.services.update', ['service' => $service]) }}">
                             {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="PUT">
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                 <label for="name" class="col-md-4 control-label">Service Name</label>
@@ -127,11 +128,11 @@
                                                                           onclick="addHeader();">+</button></span>
                                 </div>
 
-                                <ul id="headers">
-                                    @include('admin.services.partials._multiItem', ['items' => $service->headers_array()])
-                                </ul>
-
                             </div>
+
+                            <ul class="form-group" id="headers">
+                                @include('admin.services.partials._multiItem', ['items' => $service->headers_array(), 'type' => 'headers'])
+                            </ul>
 
                             <div class="form-group{{ $errors->has('query') ? ' has-error' : '' }}">
                                 <label for="query" class="col-md-4 control-label">Request Query String</label>
@@ -147,10 +148,11 @@
                                                                           onclick="addQuery();">+</button></span>
                                 </div>
 
-                                <ul id="query">
-                                    @include('admin.services.partials._multiItem', ['items' => $service->query_parameters_array()])
-                                </ul>
                             </div>
+
+                            <ul class="form-group" id="query">
+                                @include('admin.services.partials._multiItem', ['items' => $service->query_parameters_array(), 'type' => 'query'])
+                            </ul>
 
                             <div class="form-group{{ $errors->has('slow_threshold') ? ' has-error' : '' }}">
                                 <label for="slow_threshold" class="col-md-4 control-label">Service Slow
