@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Disk;
+use App\Service;
 use Illuminate\Http\Request;
 
 /**
@@ -19,6 +20,7 @@ class HomeController extends Controller
     public function index()
     {
         $diskSpace = Disk::all();
-        return view('home', ['disks' => $diskSpace]);
+        $serviceStatuses = Service::getActiveServiceStatuses();
+        return view('home', ['disks' => $diskSpace, 'serviceStatuses' => $serviceStatuses]);
     }
 }

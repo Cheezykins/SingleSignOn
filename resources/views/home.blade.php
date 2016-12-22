@@ -4,6 +4,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Service Status
+                    </div>
+                    <div class="panel-body">
+                        @foreach($serviceStatuses as $serviceStatus)
+                            {!! \App\ViewHelpers\StatusLabel::alertFor($serviceStatus) !!}
+                        @endforeach
+                    </div>
+                </div>
                 @foreach(Auth::user()->linksByCategory() as $category => $links)
                     <div class="panel panel-default">
                         <div class="panel-heading">{{ $category }}</div>

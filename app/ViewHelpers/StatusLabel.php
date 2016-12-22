@@ -10,37 +10,32 @@ class StatusLabel
 {
     public static function forStatus(ServiceStatus $status)
     {
-        switch ($status->group) {
+        $label = self::getLabel($status->group);
+        return self::labelFor($label, $status->status);
+    }
+
+    protected static function getLabel($group) {
+        switch ($group) {
             case ServiceStatus::GROUP_GOOD:
-                return self::goodGroup($status->status);
+                $label = 'success';
+                break;
             case ServiceStatus::GROUP_BAD:
-                return self::badGroup($status->status);
+                $label = 'danger';
+                break;
             case ServiceStatus::GROUP_WARNING:
-                return self::warningGroup($status->status);
+                $label = 'warning';
+                break;
             default:
-                return self::neutralGroup($status->status);
-
+                $label = 'default';
         }
+
+        return $label;
     }
 
-    protected static function goodGroup($status)
+    public static function alertFor($status)
     {
-        return self::labelFor('success', $status);
-    }
-
-    protected static function badGroup($status)
-    {
-        return self::labelFor('danger', $status);
-    }
-
-    protected static function warningGroup($status)
-    {
-        return self::labelFor('warning', $status);
-    }
-
-    protected static function neutralGroup($status)
-    {
-        return self::labelFor('default', $status);
+        $label = self::getLabel($status['group']);
+        return '<div class="alert alert-' . $label . '" role="alert"><strong>' . $status['name'] . "</strong> " . $status['status'] . '</div>';
     }
 
     protected static function labelFor($label, $status)

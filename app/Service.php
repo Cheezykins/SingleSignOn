@@ -149,8 +149,7 @@ class Service extends Model
             RequestOptions::ON_STATS => [$update, 'fillStatistics']
         ];
 
-        if (!$this->enable_ssl_validation)
-        {
+        if (!$this->enable_ssl_validation) {
             $options[RequestOptions::VERIFY] = false;
         }
 
@@ -203,6 +202,45 @@ class Service extends Model
         $update->service_status()->associate(ServiceStatus::whereStatus(ServiceStatus::STATUS_UNKNOWN)->firstOrFail());
         $update->save();
         return $update;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getActiveServiceStatuses()
+    {
+        /** @var Service[] $services */
+        $services = self::whereActive(true)->get();
+
+        $return = [];
+
+        foreach ($services as $service) {
+            $lastUpdate = $service->last_update();
+            if ($lastUpdate->service_status->group === ServiceStatus::GROUP_GOOD) {
+                continue;
+            }
+            $entry = [
+                'name' => $service->name,
+                'group' => $lastUpdate->service_status->group,
+                'status' => $lastUpdate->service_status->status
+            ];
+
+            if ($lastUpdate->response_time > 0) {
+                $entry['status'] .= " ({$lastUpdate->response_time} ms response time)";
+            }
+            $return[] = $entry;
+
+        }
+
+        if (count($return) == 0) {
+            $return[] = [
+                'name' => 'All systems',
+                'group' => ServiceStatus::GROUP_GOOD,
+                'status' => 'Running smoothly'
+            ];
+        }
+
+        return $return;
     }
 
 }
