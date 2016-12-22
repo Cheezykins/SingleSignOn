@@ -72,6 +72,21 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('enable_ssl_validation') ? ' has-error' : '' }}">
+                                <label for="enable_ssl_validation" class="col-md-4 control-label">Validate SSL Certificate</label>
+
+                                <div class="col-md-6">
+                                    Yes <input type="radio" value="1" name="enable_ssl_validation" id="activeYes" checked>
+                                    No <input type="radio" value="0" name="enable_ssl_validation" id="activeNo">
+
+                                    @if ($errors->has('enable_ssl_validation'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('enable_ssl_validation') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('method') ? ' has-error' : '' }}">
                                 <label for="method" class="col-md-4 control-label">Request Method</label>
 

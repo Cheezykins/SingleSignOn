@@ -18,11 +18,15 @@
                             </tr>
                             <tr>
                                 <th>Active</th>
-                                <td>{{ $service->active }}</td>
+                                <td>@include('partials._boolean', ['item' => $service->active])</td>
                             </tr>
                             <tr>
                                 <th>Request URL</th>
                                 <td>{{ $service->url }}</td>
+                            </tr>
+                            <tr>
+                                <th>Validate SSL Certificate</th>
+                                <td>@include('partials._boolean', ['item' => $service->enable_ssl_validation])</td>
                             </tr>
                             <tr>
                                 <th>Request method</th>

@@ -13,6 +13,7 @@ class ServiceController extends Controller
 
     protected $rules = [
         'url' => 'required|url',
+        'enable_ssl_validation' => 'required|boolean',
         'method' => 'required|in:GET,POST,PUT,DELETE,PATCH',
         'name' => 'required|string',
         'description' => 'required|string',

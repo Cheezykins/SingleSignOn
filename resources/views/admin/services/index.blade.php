@@ -22,7 +22,7 @@
                                 <tr>
                                     <td><a href="{{ route('admin.services.show', ['service' => $service]) }}">{{ $service->id }}</a></td>
                                     <td>{{ $service->name }}</td>
-                                    <td>{{ $service->active }}</td>
+                                    <td>@include('partials._boolean', ['item' => $service->active])</td>
                                     <td>{!! \App\ViewHelpers\StatusLabel::forStatus($service->last_update()->service_status) !!}</td>
                                     <td>
                                         <a href="{{ route('admin.services.show', ['service' => $service]) }}">View</a> /

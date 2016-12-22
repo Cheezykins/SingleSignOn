@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $url
+ * @property bool $enable_ssl_validation
  * @property string $method
  * @property string $payload
  * @property string $name
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceQueryParameter[] $service_query_parameters
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereUrl($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereEnableSslValidation($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereMethod($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service wherePayload($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Service whereName($value)
@@ -146,6 +148,11 @@ class Service extends Model
             RequestOptions::JSON => $this->payload,
             RequestOptions::ON_STATS => [$update, 'fillStatistics']
         ];
+
+        if (!$this->enable_ssl_validation)
+        {
+            $options[RequestOptions::VERIFY] = false;
+        }
 
         $client = app()->make(ClientInterface::class);
 
