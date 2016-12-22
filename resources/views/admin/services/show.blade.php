@@ -63,7 +63,44 @@
                         </table>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Service History</div>
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                                <th>Action</th>
+                            </tr>
+                            @foreach ($service->service_updates()->orderBy('created_at', 'DESC')->get() as $update)
+                                <tr>
+                                    <td>{{ $update->created_at->toDateTimeString() }}</td>
+                                    <td>{!! \App\ViewHelpers\StatusLabel::forStatus($update->service_status) !!}</td>
+                                    <td>{{ $update->response_time }}</td>
+                                    <td>
+                                        @if (strlen(trim($update->log)) > 0)
+                                            <button onclick="toggleLog(this)" class="btn btn-primary">Show / Hide Log</button>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr class="logContainer">
+                                    <td colspan="4"><div style="width: 100%"><div class="log">{{ $update->log }}</div></div></td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function toggleLog(node)
+        {
+            $(node).closest('tr').next().slideToggle();
+        }
+    </script>
 @endsection

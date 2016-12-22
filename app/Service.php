@@ -155,10 +155,10 @@ class Service extends Model
 
             $status = ServiceStatus::STATUS_UP;
 
-            if ($update->responseTime > $this->slow_threshold) {
+            if ($update->response_time > $this->slow_threshold) {
                 $status = ServiceStatus::STATUS_SLOW;
             }
-            if ($update->responseTime > $this->very_slow_threshold) {
+            if ($update->response_time > $this->very_slow_threshold) {
                 $status = ServiceStatus::STATUS_VSLOW;
             }
 
@@ -192,7 +192,7 @@ class Service extends Model
         $update = new ServiceUpdate();
         $update->service()->associate($this);
         $update->log = '';
-        $update->responseTime = 0;
+        $update->response_time = 0;
         $update->service_status()->associate(ServiceStatus::whereStatus(ServiceStatus::STATUS_UNKNOWN)->firstOrFail());
         $update->save();
         return $update;

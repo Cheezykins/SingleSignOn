@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Disk;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -31,6 +32,7 @@ class GetDiskSpace extends Command
 
         foreach ($data as $diskData) {
             $this->info('Processing disk ' . $diskData->name);
+
             try {
                 $this->info('Trying to find disk in database');
                 $disk = Disk::wherePath($diskData->name)->firstOrFail();
@@ -43,10 +45,10 @@ class GetDiskSpace extends Command
 
             $disk->capacity = $diskData->total;
             $disk->free_space = $diskData->free;
+            $disk->updated_at = Carbon::now();
 
             $disk->save();
             $this->info('Disk ' . $diskData->name . ' done');
         }
-
     }
 }

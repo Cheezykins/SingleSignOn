@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $service_id
  * @property integer $service_status_id
  * @property string $log
- * @property integer $responseTime
+ * @property integer $response_time
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Service $service
@@ -41,7 +41,7 @@ class ServiceUpdate extends Model
 
     public function fillStatistics(TransferStats $stats)
     {
-        $this->responseTime = (int)round($stats->getTransferTime() * 1000, 0);
+        $this->response_time = (int)round($stats->getTransferTime() * 1000, 0);
     }
 
     public function fillResults(Response $response)
