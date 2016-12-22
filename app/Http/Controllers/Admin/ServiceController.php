@@ -149,6 +149,7 @@ class ServiceController extends Controller
     protected function updateService(Service $service, Request $request)
     {
         $service->url = $request->input('url');
+        $service->enable_ssl_validation = $request->input('enable_ssl_validation');
         $service->method = $request->input('method');
         $service->name = $request->input('name');
         $service->description = $request->input('description');
