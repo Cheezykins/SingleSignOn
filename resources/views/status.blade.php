@@ -29,7 +29,7 @@
                                         {!! \App\ViewHelpers\StatusLabel::forStatus($service->last_update()->service_status) !!}
                                     </td>
                                     <td>
-                                        {{ $service->last_update()->created_at->toDateTimeString() }}
+                                        <time class="timeago" datetime="{{ $service->last_update()->created_at->toIso8601String() }}">{{ $service->last_update()->created_at->toDateTimeString() }}</time>
                                     </td>
                                     <td>
                                         {{ $service->last_update()->response_time }} ms
@@ -42,4 +42,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('time.timeago').timeago();
+        });
+    </script>
 @endsection
