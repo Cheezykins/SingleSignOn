@@ -13,6 +13,9 @@
                             {!! \App\ViewHelpers\StatusLabel::alertFor($serviceStatus) !!}
                         @endforeach
                     </div>
+                    <div class="panel-footer">
+                        <a href="{{ route('status') }}">Details</a>
+                    </div>
                 </div>
                 @foreach(Auth::user()->linksByCategory() as $category => $links)
                     <div class="panel panel-default">

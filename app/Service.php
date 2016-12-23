@@ -42,6 +42,8 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
 
+    protected $_lastUpdate;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -72,7 +74,10 @@ class Service extends Model
      */
     public function last_update()
     {
-        return $this->service_updates()->orderBy('updated_at', 'desc')->first();
+        if ($this->_lastUpdate === null) {
+            $this->_lastUpdate = $this->service_updates()->orderBy('updated_at', 'desc')->first();
+        }
+        return $this->_lastUpdate;
     }
 
     /**
