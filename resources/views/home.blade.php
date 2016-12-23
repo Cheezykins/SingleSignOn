@@ -56,8 +56,6 @@
                                     </tr>
                                     <tr><th>Used</th><td> {{ $disk->usedSpaceFormatted() }}</td></tr>
                                     <tr><th>Free</th><td> {{ $disk->freeSpaceFormatted() }}</td></tr>
-
-
                                 </table>
                             </div>
                         </div>

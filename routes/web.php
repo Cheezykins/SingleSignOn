@@ -21,6 +21,7 @@ Route::group(['middleware' => ['checkcookie']], function () {
     Route::post('changepass', 'Auth\PasswordController@postChangePass')->name('password.postchange');
     Route::group(['middleware' => ['requireadmin'], 'as' => 'admin.'], function() {
         Route::get('admin', 'Admin\AdminController@index')->name('home');
+        Route::put('admin/users/{user}/reset', 'Admin\UserController@resetPassword')->name('users.resetpassword');
         Route::resource('admin/users', 'Admin\UserController');
         Route::resource('admin/services', 'Admin\ServiceController');
     });

@@ -24,13 +24,11 @@ class UserSetPassword extends Command
         }
 
         try {
+            /** @var User $user */
             $user = User::whereUsername($userName)->firstOrFail();
 
             $this->info('Changing password for ' . $userName);
-
-            $pass = PassGen::generate(4);
-            $user->password = Hash::make($pass->getPlainText(), ['rounds' => 12]);
-            $user->must_change_pass = true;
+            $pass = $user->resetPassword();
             $user->save();
 
             $this->info('New Password: ' . $pass->getPlainText());

@@ -31,7 +31,24 @@
                                         <td>
                                             <a href="{{ route('admin.users.show', ['user' => $user]) }}">View</a> /
                                             <a href="{{ route('admin.users.edit', ['user' => $user]) }}">Edit</a> /
-                                            <a href="{{ route('admin.users.destroy', ['user' => $user]) }}">Delete</a>
+                                            @if (Auth::user()->id == $user->id)
+                                                Reset Password / Delete
+
+                                            @else
+                                                <a href="#" onclick="event.preventDefault();document.getElementById('reset-form-{{ $user->id }}').submit()">Reset Password</a> /
+                                                <a href="#" onclick="event.preventDefault();document.getElementById('delete-form-{{ $user->id }}').submit()">Delete</a>
+                                            @endif
+
+                                            <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST" style="display: none;">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                {{ csrf_field() }}
+                                            </form>
+
+                                            <form id="reset-form-{{ $user->id }}" action="{{ route('admin.users.resetpassword', ['user' => $user]) }}" method="POST" style="display: none;">
+                                                <input type="hidden" name="_method" value="PUT">
+                                                {{ csrf_field() }}
+                                            </form>
+
                                         </td>
                                     </tr>
                                 @endforeach

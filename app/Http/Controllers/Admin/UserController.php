@@ -99,6 +99,18 @@ class UserController extends Controller
         // update user
     }
 
+    public function resetPassword($id)
+    {
+        /** @var User $user */
+        $user = User::findOrFail($id);
+
+        $password = $user->resetPassword();
+        $user->save();
+
+        session()->flash('message', "User {$user->username} has had their password reset to {$password->getPlainText()} it is not possible to recover this password beyond this page, so record it now!");
+        return response()->redirectToRoute('admin.users.index');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

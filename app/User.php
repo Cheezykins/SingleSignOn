@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Cheezykins\PassGen\PassWord;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -75,13 +76,28 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Reset the users password
+     *
+     * @return PassWord
+     */
+    public function resetPassword()
+    {
+        /** @var PassWord $newPassword */
+        $newPassword = \PassGen::generate(4);
+        $hash = \Hash::make($newPassword->getPlainText(), ['rounds' => 12]);
+        $this->password = $hash;
+        $this->must_change_pass = true;
+        return $newPassword;
+    }
+
+    /**
      * Verifies if a user has a role.
-     * @param $roleName
+     * @param $roleNCode
      * @return bool
      */
-    public function hasRole($roleName)
+    public function hasRole($roleNCode)
     {
-        return $this->roles()->whereCode($roleName)->count() > 0;
+        return $this->roles()->whereCode($roleNCode)->count() > 0;
     }
 
     /**
@@ -91,10 +107,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function canAccess($domainName)
     {
-        foreach ($this->roles as $role)
-        {
-            if ($role->hasDomain($domainName))
-            {
+        foreach ($this->roles as $role) {
+            if ($role->hasDomain($domainName)) {
                 return true;
             }
         }
@@ -108,12 +122,9 @@ class User extends Authenticatable implements JWTSubject
     public function linksByCategory()
     {
         $links = [];
-        foreach ($this->roles as $role)
-        {
-            foreach ($role->links as $link)
-            {
-                if (!array_key_exists($link->category->name, $links))
-                {
+        foreach ($this->roles as $role) {
+            foreach ($role->links as $link) {
+                if (!array_key_exists($link->category->name, $links)) {
                     $links[$link->category->name] = [];
                 }
                 $links[$link->category->name][] = $link;

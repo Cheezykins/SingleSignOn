@@ -31,11 +31,9 @@ class UserAdd extends Command
             $username = $this->ask("Enter a username");
         }
 
-        $password = PassGen::generate(4);
-
         $user = new User();
         $user->username = $username;
-        $user->password = Hash::make($password->getPlainText(), ['rounds' => 12]);
+        $password = $user->resetPassword();
         $user->save();
 
         $this->info('User ' . $username . ' created successfully');
