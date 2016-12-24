@@ -20,7 +20,7 @@
                             @foreach($services as $service)
                                 <tr>
                                     <td>
-                                        {{ $service->name }}
+                                        <a href="{{ route('status.show', ['service' => $service]) }}">{{ $service->name }}</a>
                                     </td>
                                     <td>
                                         {{ $service->description }}

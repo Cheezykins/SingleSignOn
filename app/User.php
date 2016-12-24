@@ -92,12 +92,12 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * Verifies if a user has a role.
-     * @param $roleNCode
+     * @param $roleCode
      * @return bool
      */
-    public function hasRole($roleNCode)
+    public function hasRole($roleCode)
     {
-        return $this->roles()->whereCode($roleNCode)->count() > 0;
+        return $this->roles()->whereCode($roleCode)->count() > 0;
     }
 
     /**

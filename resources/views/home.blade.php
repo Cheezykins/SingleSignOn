@@ -14,7 +14,7 @@
                         @endforeach
                     </div>
                     <div class="panel-footer">
-                        <a href="{{ route('status') }}">Details</a>
+                        <a href="{{ route('status.index') }}">Details</a>
                     </div>
                 </div>
                 @foreach(Auth::user()->linksByCategory() as $category => $links)

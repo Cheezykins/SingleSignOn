@@ -14,7 +14,7 @@ class AuthCheck
         $token = \Cookie::get('cheezyssotoken');
         try {
             $user = JWTAuth::setToken($token)->authenticate();
-            if ($request->route()->getName() != 'password.change' && $request->route()->getName() != 'password.postchange' && $user->must_change_pass) {
+            if ($user->must_change_pass && $request->route()->getName() != 'password.change' && $request->route()->getName() != 'password.postchange') {
                 $request->session()->flash('message', 'Your account has been marked for a password change');
                 return response()->redirectToRoute('password.change');
             }

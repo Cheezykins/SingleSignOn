@@ -24,12 +24,5 @@ class HomeController extends Controller
         return view('home', ['disks' => $diskSpace, 'serviceStatuses' => $serviceStatuses]);
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function status()
-    {
-        $services = Service::whereActive(true)->get();
-        return view('status', ['services' => $services]);
-    }
+
 }
