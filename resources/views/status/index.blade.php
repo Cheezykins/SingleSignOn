@@ -38,6 +38,7 @@
                             @endforeach
                         </table>
                     </div>
+                    @include('partials._backfooter')
                 </div>
             </div>
         </div>
