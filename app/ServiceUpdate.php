@@ -39,6 +39,11 @@ class ServiceUpdate extends Model
         return $this->belongsTo(ServiceStatus::class);
     }
 
+    public function history()
+    {
+        return $this->hasMany(ServiceResponseHistory::class);
+    }
+
     public function fillStatistics(TransferStats $stats)
     {
         $this->response_time = (int)round($stats->getTransferTime() * 1000, 0);
