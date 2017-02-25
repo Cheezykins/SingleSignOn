@@ -16,6 +16,8 @@ class GetServiceStatus extends Command
     protected $signature = 'service-status:get';
     protected $client;
 
+    const LOCK_NAME = 'ServiceStatus';
+
     /**
      * The console command description.
      *
@@ -23,8 +25,32 @@ class GetServiceStatus extends Command
      */
     protected $description = 'Gets the latest service status updates';
 
+    protected function getLock()
+    {
+        $lockId = uniqid('LOCK_' . time() . '_');
+        $currentLockId = \Cache::get(self::LOCK_NAME . '_LOCK_ID', $lockId);
+
+        if ($lockId === $currentLockId) {
+            \Cache::forever(self::LOCK_NAME . '_LOCK_ID', $lockId);
+            return $lockId;
+        } else {
+            return null;
+        }
+    }
+
+    protected function releaseLock($lock)
+    {
+        \Cache::forget(self::LOCK_NAME . '_LOCK_ID');
+    }
+
     public function handle()
     {
+        $lock = $this->getLock();
+        if ($lock === null) {
+            $this->warn('Another run is in progress, you cannot run two at once');
+            return;
+        }
+
         /** @var Service[] $services */
         $services = Service::whereActive(true)->get();
 
@@ -46,12 +72,16 @@ class GetServiceStatus extends Command
                 $newUpdate->save();
                 $this->info('Status for ' . $service->name . ' set to ' . $newUpdate->service_status->status);
             } else {
+                $lastUpdate->addToHistory();
+                $lastUpdate->response_time = $newUpdate->response_time;
                 $newUpdate->delete();
+                $lastUpdate->save();
                 $this->info('Status for ' . $service->name . ' unchanged');
             }
 
-
         }
+
+        $this->releaseLock($lock);
     }
 
     /**

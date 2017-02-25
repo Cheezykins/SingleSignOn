@@ -236,6 +236,7 @@ $config = [
 if ($config['env'] === "devlop" || $config['env'] === "devlopment" || $config['env'] === "local")
 {
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
+    $config['providers'][] = Laralib\L5scaffold\GeneratorsServiceProvider::class;
 }
 
 return $config;

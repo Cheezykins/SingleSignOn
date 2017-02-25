@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Service $service
  * @property-read \App\ServiceStatus $service_status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServiceResponseHistory[] $history
  * @method static \Illuminate\Database\Query\Builder|\App\ServiceUpdate whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ServiceUpdate whereServiceId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ServiceUpdate whereServiceStatusId($value)
@@ -42,6 +43,15 @@ class ServiceUpdate extends Model
     public function history()
     {
         return $this->hasMany(ServiceResponseHistory::class);
+    }
+
+    public function addToHistory()
+    {
+        $history = new ServiceResponseHistory();
+        $history->entry_date = $this->updated_at;
+        $history->response_time = $this->response_time;
+        $history->service_update()->associate($this);
+        $history->save();
     }
 
     public function fillStatistics(TransferStats $stats)
