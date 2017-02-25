@@ -41,6 +41,9 @@ class DiskHistory extends Model
 
     public function percentageUsed()
     {
+        if ($this->capacity === 0) {
+            return 0;
+        }
         return round(100 - (($this->free_space / $this->capacity) * 100), 2);
     }
 

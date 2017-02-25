@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('diskspace:get')->everyTenMinutes();
-        $schedule->command('service-status:get')->everyFiveMinutes();
+        $schedule->command('service-status:get')->everyMinute();
     }
 
     /**

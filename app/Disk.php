@@ -51,6 +51,9 @@ class Disk extends Model
 
     public function percentageUsed()
     {
+        if ($this->capacity === 0) {
+            return 0;
+        }
         return round(100 - (($this->free_space / $this->capacity) * 100), 2);
     }
 
@@ -71,6 +74,9 @@ class Disk extends Model
 
     public static function renderBytes($bytes, $precision = 2)
     {
+        if ($bytes === 0) {
+            return '0.00 B';
+        }
         $factors = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.{$precision}f %s", $bytes / pow(1024, $factor), $factors[(int)$factor]);
