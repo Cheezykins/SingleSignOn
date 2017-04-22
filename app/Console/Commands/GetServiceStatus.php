@@ -51,37 +51,41 @@ class GetServiceStatus extends Command
             return;
         }
 
-        /** @var Service[] $services */
-        $services = Service::whereActive(true)->get();
+        try {
+            /** @var Service[] $services */
+            $services = Service::whereActive(true)->get();
 
-        foreach ($services as $service) {
-            $this->info('Getting status for ' . $service->name);
+            foreach ($services as $service) {
+                $this->info('Getting status for ' . $service->name);
 
-            $lastUpdate = $service->last_update();
-            if ($lastUpdate == null) {
-                $lastUpdate = $service->createInitialUpdate();
+                $lastUpdate = $service->last_update();
+                if ($lastUpdate == null) {
+                    $lastUpdate = $service->createInitialUpdate();
+                }
+
+                $this->info('Current status is ' . $lastUpdate->service_status->status);
+
+                $newUpdate = $service->determineServiceUpdate();
+
+                if ($newUpdate->service_status->status !== $lastUpdate->service_status->status) {
+                    $newUpdate->service_status()->associate($this->setStatus($lastUpdate->service_status->status,
+                        $newUpdate->service_status->status));
+                    $newUpdate->save();
+                    $this->info('Status for ' . $service->name . ' set to ' . $newUpdate->service_status->status);
+                } else {
+                    $lastUpdate->addToHistory();
+                    $lastUpdate->response_time = $newUpdate->response_time;
+                    $newUpdate->delete();
+                    $lastUpdate->save();
+                    $this->info('Status for ' . $service->name . ' unchanged');
+                }
+
             }
-
-            $this->info('Current status is ' . $lastUpdate->service_status->status);
-
-            $newUpdate = $service->determineServiceUpdate();
-
-            if ($newUpdate->service_status->status !== $lastUpdate->service_status->status) {
-                $newUpdate->service_status()->associate($this->setStatus($lastUpdate->service_status->status,
-                    $newUpdate->service_status->status));
-                $newUpdate->save();
-                $this->info('Status for ' . $service->name . ' set to ' . $newUpdate->service_status->status);
-            } else {
-                $lastUpdate->addToHistory();
-                $lastUpdate->response_time = $newUpdate->response_time;
-                $newUpdate->delete();
-                $lastUpdate->save();
-                $this->info('Status for ' . $service->name . ' unchanged');
-            }
-
+        } finally {
+            $this->releaseLock($lock);
         }
 
-        $this->releaseLock($lock);
+
     }
 
     /**
