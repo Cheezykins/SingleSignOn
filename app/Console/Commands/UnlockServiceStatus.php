@@ -22,7 +22,7 @@ class UnlockServiceStatus extends Command
 
     public function handle()
     {
-        \Cache::forget(GetServiceStatus::LOCK_NAME . 'LOCK_ID');
+        \Cache::forget(GetServiceStatus::LOCK_NAME . '_LOCK_ID');
         $this->info('Lock deleted');
     }
 }
