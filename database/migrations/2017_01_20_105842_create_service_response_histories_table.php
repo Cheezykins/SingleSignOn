@@ -16,7 +16,7 @@ class CreateServiceResponseHistoriesTable extends Migration
         Schema::create('service_response_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('service_update_id');
-            $table->foreign('service_update_id')->references('id')->on('disks')->onDelete('cascade');
+            $table->foreign('service_update_id')->references('id')->on('service_updates')->onDelete('cascade');
             $table->timestamp('entry_date');
             $table->unsignedBigInteger('response_time');
             $table->timestamps();
