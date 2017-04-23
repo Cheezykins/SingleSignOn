@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Disk
  *
  * @property integer $id
+ * @property integer $order
  * @property string $path
  * @property integer $capacity
  * @property integer $free_space
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\DiskHistory[] $history
  * @method static \Illuminate\Database\Query\Builder|\App\Disk whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Disk whereOrder($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Disk wherePath($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Disk whereCapacity($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Disk whereFreeSpace($value)

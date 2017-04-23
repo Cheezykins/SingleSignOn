@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $diskSpace = Disk::all();
+        $diskSpace = Disk::orderBy('order', 'asc')->get();
         $serviceStatuses = Service::getActiveServiceStatuses();
         return view('home', ['disks' => $diskSpace, 'serviceStatuses' => $serviceStatuses]);
     }
