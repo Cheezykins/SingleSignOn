@@ -43,14 +43,25 @@
                             <div class="panel-heading">Disk Status: {{ $disk->path }}</div>
                             <div class="panel-body">
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-info progress-striped"
-                                         role="progressbar"
-                                         aria-valuenow="{{ $disk->percentageUsed() }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         style="width: {{ $disk->percentageUsed() }}%">
-                                        {{ $disk->percentageUsed() }} % used
-                                    </div>
+                                    @if ($disk->percentageUsed() > 90)
+                                        <div class="progress-bar progress-bar-danger progress-striped"
+                                             role="progressbar"
+                                             aria-valuenow="{{ $disk->percentageUsed() }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="width: {{ $disk->percentageUsed() }}%">
+                                            {{ $disk->percentageUsed() }} % used
+                                        </div>
+                                    @else
+                                        <div class="progress-bar progress-bar-info progress-striped"
+                                             role="progressbar"
+                                             aria-valuenow="{{ $disk->percentageUsed() }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="width: {{ $disk->percentageUsed() }}%">
+                                            {{ $disk->percentageUsed() }} % used
+                                        </div>
+                                    @endif
                                 </div>
                                 <table class="table table-bordered">
                                     <tr>
